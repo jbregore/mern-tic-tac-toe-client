@@ -34,7 +34,7 @@ const LoginCard = () => {
             </form>
 
             <p className="text-sm font-light text-gray-500 text-center">
-              Don&apos;t have an account yet?{" "}
+              Don&apos;t have an account yet? {/* test  */}
               <Link href="/register">
                 <span className="font-medium text-blue-600 hover:underline ">
                   Sign up
