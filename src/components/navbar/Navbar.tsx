@@ -6,8 +6,10 @@ import NavbarLink from "./NavbarLink";
 import { FaRegUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import { IoMdMenu } from "react-icons/io";
+import { NavbarProps } from "./interfaces";
 
-const Navbar = () => {
+const Navbar = (props: NavbarProps) => {
+  const { activeLink } = props;
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false);
 
@@ -34,7 +36,7 @@ const Navbar = () => {
             {/* dropdown menu  */}
             {isOpenProfile && (
               <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100">
-                <Link href="#">
+                <Link href="/profile">
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     My Profile
                   </span>
@@ -64,12 +66,28 @@ const Navbar = () => {
           } items-center justify-between w-full md:flex md:w-auto md:order-1`}
         >
           <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white ">
-            <NavbarLink title="Play" link="/play" isActive />
-            <NavbarLink title="Rankings" link="/rankings" />
-            <NavbarLink title="History" link="/history" />
+            <NavbarLink
+              title="Play"
+              link="/play"
+              isActive={activeLink == "play"}
+            />
+            <NavbarLink
+              title="Rankings"
+              link="/rankings"
+              isActive={activeLink == "rankings"}
+            />
+            <NavbarLink
+              title="History"
+              link="/history"
+              isActive={activeLink == "history"}
+            />
 
             <div className="block md:hidden">
-              <NavbarLink title="My Profile" link="/profile" />
+              <NavbarLink
+                title="My Profile"
+                link="/profile"
+                isActive={activeLink == "profile"}
+              />
               <li
                 className={`block py-2 px-3  rounded md:bg-transparent md:p-0 text-gray-900`}
               >

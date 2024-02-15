@@ -4,7 +4,7 @@ import React from "react";
 const Play = () => {
   return (
     <main className="min-h-screen ">
-      <Navbar />
+      <Navbar activeLink="play" />
     </main>
   );
 };
