@@ -7,4 +7,5 @@ export interface TextInputProps {
   onChange?: ChangeEventHandler<HTMLInputElement>;
   name?: string;
   value?: string;
+  error?: string;
 }
