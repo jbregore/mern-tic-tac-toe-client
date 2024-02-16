@@ -4,9 +4,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Spinner from "@/components/buttons/Spinner";
 import { useRouter } from "next/navigation";
-import Navbar from "@/components/navbar/Navbar";
 
-export default function ProtectedLayout({
+export default function UnProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -27,10 +26,6 @@ export default function ProtectedLayout({
     fetchData();
   }, [pathname]);
 
-  if (!user && !isLoading) {
-    router.push("/");
-  }
-
   if (isLoading) {
     return (
       <div className="w-full h-screen flex items-center justify-center ">
@@ -39,11 +34,9 @@ export default function ProtectedLayout({
     );
   }
 
-  return (
-    <main className="min-h-screen pt-32">
-      <Navbar activeLink={pathname} />
+  if (user && !isLoading) {
+    router.push("/play");
+  }
 
-      {children}
-    </main>
-  );
+  return children;
 }

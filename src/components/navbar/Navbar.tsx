@@ -7,11 +7,19 @@ import { FaRegUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import { IoMdMenu } from "react-icons/io";
 import { NavbarProps } from "./interfaces";
+import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const Navbar = (props: NavbarProps) => {
+  const router = useRouter();
   const { activeLink } = props;
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false);
+
+  const handleLogout = async () => {
+    Cookies.remove("token");
+    router.push("/");
+  };
 
   return (
     <nav className="bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200">
@@ -42,7 +50,7 @@ const Navbar = (props: NavbarProps) => {
                   </span>
                 </Link>
 
-                <div className="cursor-pointer">
+                <div className="cursor-pointer" onClick={handleLogout}>
                   <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Logout
                   </span>

@@ -116,7 +116,7 @@ const LoginCard = () => {
 
             <p className="text-sm font-light text-gray-500 text-center">
               Don&apos;t have an account yet?{" "}
-              <Link href="/register">
+              <Link href="/sign-up">
                 <span className="font-medium text-blue-600 hover:underline ">
                   Sign up
                 </span>
