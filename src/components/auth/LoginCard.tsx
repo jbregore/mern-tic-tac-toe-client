@@ -8,7 +8,7 @@ import Link from "next/link";
 const LoginCard = () => {
   return (
     <section className="">
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
         <div className="mb-8 flex justify-center">
           <Image src={Banner} alt="Tic Tac Toe Banner" className="w-[90%]" />
         </div>
@@ -34,7 +34,7 @@ const LoginCard = () => {
             </form>
 
             <p className="text-sm font-light text-gray-500 text-center">
-              Don&apos;t have an account yet?{" e"}
+              Don&apos;t have an account yet?{" "}
               <Link href="/register">
                 <span className="font-medium text-blue-600 hover:underline ">
                   Sign up

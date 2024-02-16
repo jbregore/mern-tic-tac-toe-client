@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Button from "../buttons/Button";
 import TextInput from "../inputs/TextInput";
 import ChangePasswordModal from "../modals/ChangePasswordModal";
+import Title from "../texts/Title";
 
 const ProfileCard = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -10,9 +11,7 @@ const ProfileCard = () => {
   return (
     <div className="max-w-screen-sm flex flex-wrap items-center justify-between md:mx-auto mx-4">
       <div className="w-full bg-white border border-gray-200 rounded-lg shadow-sm p-4 ">
-        <p className="mb-6 border-b border-b-gray-300 pb-2 text-lg font-semibold">
-          My Profile
-        </p>
+        <Title title="My Profile" />
 
         <div className="max-w-screen-sm">
           <form>
