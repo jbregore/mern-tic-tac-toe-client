@@ -9,9 +9,13 @@ import { IoMdMenu } from "react-icons/io";
 import { NavbarProps } from "./interfaces";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { useUserStore } from "@/zustand/store";
 
 const Navbar = (props: NavbarProps) => {
   const router = useRouter();
+  const user = useUserStore((state) => state.user);
+  const setUser = useUserStore((state) => state.setUser);
+
   const { activeLink } = props;
   const [isOpenProfile, setIsOpenProfile] = useState(false);
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false);
@@ -19,13 +23,19 @@ const Navbar = (props: NavbarProps) => {
   const handleLogout = async () => {
     Cookies.remove("token");
     router.push("/");
+    setUser(null);
   };
 
   return (
     <nav className="bg-white fixed w-full z-20 top-0 start-0 border-b border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <div>
-          <Image src={Banner} alt="Tic Tac Toe Banner" className="w-44 h-10" />
+          <Image
+            src={Banner}
+            alt="Tic Tac Toe Banner"
+            className="w-44 h-10"
+            priority
+          />
         </div>
 
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
@@ -38,7 +48,7 @@ const Navbar = (props: NavbarProps) => {
               className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2 "
             >
               <FaRegUserCircle size={20} className="mr-2" />
-              Juan Dela Cruz
+              {user?.first_name + " " + user?.last_name}
             </button>
 
             {/* dropdown menu  */}

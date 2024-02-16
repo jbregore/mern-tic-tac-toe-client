@@ -9,9 +9,11 @@ import { AuthApi } from "@/api/AuthApi";
 import useFormErrors from "@/hooks/useFormErrors";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { useUserStore } from "@/zustand/store";
 
 const LoginCard = () => {
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [payload, setPayload] = useState({
@@ -44,6 +46,7 @@ const LoginCard = () => {
       const result = await signin(payload);
       if (result.status == 200) {
         Cookies.set("token", JSON.stringify(result.data.token));
+        setUser(result.data.user);
         router.push("/play");
       }
     } catch (err: any) {

@@ -9,9 +9,11 @@ import { AuthApi } from "@/api/AuthApi";
 import useFormErrors from "@/hooks/useFormErrors";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { useUserStore } from "@/zustand/store";
 
 const RegisterCard = () => {
   const router = useRouter();
+  const setUser = useUserStore((state) => state.setUser);
 
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [payload, setPayload] = useState({
@@ -48,6 +50,7 @@ const RegisterCard = () => {
       const result = await signup(payload);
       if (result.status == 201) {
         Cookies.set("token", JSON.stringify(result.data.token));
+        setUser(result.data.newUser);
         router.push("/play");
       }
     } catch (err: any) {

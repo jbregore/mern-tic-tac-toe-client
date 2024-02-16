@@ -21,6 +21,7 @@ const TextInput = (props: TextInputProps) => {
         type={type}
         id={title}
         className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg outline-none block w-full p-2.5"
+        autoComplete="on"
         placeholder={title}
         disabled={isDisabled}
         onChange={onChange}
