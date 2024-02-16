@@ -6,9 +6,9 @@ import TextInput from "../inputs/TextInput";
 import Button from "../buttons/Button";
 import Link from "next/link";
 import { AuthApi } from "@/api/AuthApi";
-import Cookies from "js-cookie";
 import useFormErrors from "@/hooks/useFormErrors";
 import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 const LoginCard = () => {
   const router = useRouter();

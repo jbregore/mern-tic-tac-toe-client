@@ -2,10 +2,8 @@
 import React, { useState } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Player from "@/components/play/Player";
-import HistoryItem from "@/components/history/HistoryItem";
 import PlayerHistory from "@/components/play/PlayerHistory";
 import Title from "@/components/texts/Title";
-import Button from "@/components/buttons/Button";
 import Game from "@/components/play/Game";
 
 const Play = () => {

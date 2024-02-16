@@ -8,7 +8,18 @@ export function AuthApi() {
     return res.data;
   };
 
+  const me = async (token: string) => {
+    const res = await axios.get(`${ENDPOINTS.auth}/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  };
+
   return {
     signin,
+    me,
   };
 }
