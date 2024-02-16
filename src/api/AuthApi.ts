@@ -34,6 +34,16 @@ export function AuthApi() {
     return res.data;
   };
 
+  const updatePassword = async (payload: any, token: string) => {
+    const res = await axios.put(`${ENDPOINTS.auth}/update-password`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  };
+
   const signout = async (token: string) => {
     const res = await axios.delete(`${ENDPOINTS.auth}/signout`, {
       headers: {
@@ -49,6 +59,7 @@ export function AuthApi() {
     signup,
     me,
     updateProfile,
+    updatePassword,
     signout,
   };
 }

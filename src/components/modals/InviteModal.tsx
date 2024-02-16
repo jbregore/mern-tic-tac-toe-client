@@ -23,7 +23,7 @@ const InviteModal = (props: InviteModalProps) => {
           </div>
           <div className="md:w-32">
             <Button
-              onClick={onClose}
+              onClick={() => onClose(false)}
               title="Close"
               style="text-white bg-red-600 w-full"
               type="button"

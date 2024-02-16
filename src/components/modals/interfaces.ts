@@ -1,6 +1,6 @@
 export interface DefaultModalProps {
   visible: boolean;
-  onClose: React.MouseEventHandler<HTMLButtonElement>;
+  onClose: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ChangePasswordModalProps extends DefaultModalProps {}
