@@ -69,24 +69,24 @@ const Navbar = (props: NavbarProps) => {
             <NavbarLink
               title="Play"
               link="/play"
-              isActive={activeLink == "play"}
+              isActive={activeLink == "/play"}
             />
             <NavbarLink
               title="Rankings"
               link="/rankings"
-              isActive={activeLink == "rankings"}
+              isActive={activeLink == "/rankings"}
             />
             <NavbarLink
               title="History"
               link="/history"
-              isActive={activeLink == "history"}
+              isActive={activeLink == "/history"}
             />
 
             <div className="block md:hidden">
               <NavbarLink
                 title="My Profile"
                 link="/profile"
-                isActive={activeLink == "profile"}
+                isActive={activeLink == "/profile"}
               />
               <li
                 className={`block py-2 px-3  rounded md:bg-transparent md:p-0 text-gray-900`}

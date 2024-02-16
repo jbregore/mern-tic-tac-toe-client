@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { notFound } from "next/navigation";
 import Spinner from "@/components/buttons/Spinner";
 import { useRouter } from "next/navigation";
+import Navbar from "@/components/navbar/Navbar";
 
 export default function PlayLayout({
   children,
@@ -12,7 +13,7 @@ export default function PlayLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-  const pathname = usePathname;
+  const pathname = usePathname();
   const { isAuthenticated } = useUser();
   const [user, setUser] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,5 +40,11 @@ export default function PlayLayout({
     );
   }
 
-  return children;
+  return (
+    <main className="min-h-screen pt-32">
+      <Navbar activeLink={pathname} />
+
+      {children}
+    </main>
+  );
 }

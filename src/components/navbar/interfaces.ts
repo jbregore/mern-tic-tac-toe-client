@@ -1,5 +1,5 @@
 export interface NavbarProps {
-  activeLink: "play" | "rankings" | "history" | "profile";
+  activeLink: string;
 }
 
 export interface NavbarLinkProps {

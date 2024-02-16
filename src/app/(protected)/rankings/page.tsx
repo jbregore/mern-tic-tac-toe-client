@@ -5,9 +5,7 @@ import React from "react";
 
 const Rankings = () => {
   return (
-    <main className="min-h-screen pt-32">
-      <Navbar activeLink="rankings" />
-
+    <>
       <div className="max-w-screen-sm flex flex-wrap items-center justify-between md:mx-auto mx-4">
         <div className="w-full bg-white border border-gray-200 rounded-lg shadow-sm p-4 ">
           <Title title="Rankings" />
@@ -17,7 +15,7 @@ const Rankings = () => {
           <RankingItem rank="3" user="Balweg" score={80} />
         </div>
       </div>
-    </main>
+    </>
   );
 };
 

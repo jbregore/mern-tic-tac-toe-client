@@ -18,9 +18,7 @@ const Play = () => {
   };
 
   return (
-    <main className="min-h-screen pt-32">
-      <Navbar activeLink="play" />
-
+    <>
       {!isGameStarted ? (
         <>
           <div className="max-w-screen-sm flex flex-wrap items-center justify-between md:mx-auto mx-4">
@@ -52,7 +50,7 @@ const Play = () => {
           </div>
         </>
       )}
-    </main>
+    </>
   );
 };
 
