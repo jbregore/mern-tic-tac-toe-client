@@ -10,10 +10,13 @@ import { NavbarProps } from "./interfaces";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/zustand/store";
+import { AuthApi } from "@/api/AuthApi";
 
 const Navbar = (props: NavbarProps) => {
   const router = useRouter();
-  const { user, setUser } = useUserStore();
+  const { user, setUser, token } = useUserStore();
+
+  const { signout } = AuthApi();
 
   const { activeLink } = props;
   const [isOpenProfile, setIsOpenProfile] = useState(false);
@@ -23,6 +26,7 @@ const Navbar = (props: NavbarProps) => {
     Cookies.remove("token");
     router.push("/");
     setUser(null);
+    await signout(token);
   };
 
   return (

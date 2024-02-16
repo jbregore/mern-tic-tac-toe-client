@@ -34,10 +34,21 @@ export function AuthApi() {
     return res.data;
   };
 
+  const signout = async (token: string) => {
+    const res = await axios.delete(`${ENDPOINTS.auth}/signout`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  };
+
   return {
     signin,
     signup,
     me,
     updateProfile,
+    signout,
   };
 }
