@@ -8,6 +8,12 @@ export function AuthApi() {
     return res.data;
   };
 
+  const signup = async (payload: any) => {
+    const res = await axios.post(`${ENDPOINTS.auth}/signup`, payload);
+
+    return res.data;
+  };
+
   const me = async (token: string) => {
     const res = await axios.get(`${ENDPOINTS.auth}/me`, {
       headers: {
@@ -20,6 +26,7 @@ export function AuthApi() {
 
   return {
     signin,
+    signup,
     me,
   };
 }
