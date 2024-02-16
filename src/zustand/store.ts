@@ -20,4 +20,8 @@ export const useUserStore = create<useUserStoreProps>((set) => ({
       },
     }));
   },
+  token: "",
+  setToken: (newToken) => {
+    set(() => ({ token: newToken }));
+  },
 }));

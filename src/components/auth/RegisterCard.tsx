@@ -13,7 +13,7 @@ import { useUserStore } from "@/zustand/store";
 
 const RegisterCard = () => {
   const router = useRouter();
-  const setUser = useUserStore((state) => state.setUser);
+  const { setUser, setToken } = useUserStore();
 
   const [isButtonLoading, setIsButtonLoading] = useState(false);
   const [payload, setPayload] = useState({
@@ -49,6 +49,7 @@ const RegisterCard = () => {
     try {
       const result = await signup(payload);
       if (result.status == 201) {
+        setToken(result.data.token);
         Cookies.set("token", JSON.stringify(result.data.token));
         setUser(result.data.newUser);
         router.push("/play");

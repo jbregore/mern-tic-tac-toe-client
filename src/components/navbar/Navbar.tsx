@@ -13,8 +13,7 @@ import { useUserStore } from "@/zustand/store";
 
 const Navbar = (props: NavbarProps) => {
   const router = useRouter();
-  const user = useUserStore((state) => state.user);
-  const setUser = useUserStore((state) => state.setUser);
+  const { user, setUser } = useUserStore();
 
   const { activeLink } = props;
   const [isOpenProfile, setIsOpenProfile] = useState(false);

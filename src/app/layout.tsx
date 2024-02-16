@@ -1,7 +1,9 @@
+import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { CookiesProvider } from "next-client-cookies/server";
+import ToastProvider from "@/components/toast/ToastProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <CookiesProvider>
-        <body className={`${inter.className} bg-slate-200`}>{children}</body>
-      </CookiesProvider>
+      <body
+        className={`${inter.className} bg-slate-200`}
+        suppressHydrationWarning
+      >
+        <ToastProvider>
+          <CookiesProvider>{children}</CookiesProvider>
+        </ToastProvider>
+      </body>
     </html>
   );
 }

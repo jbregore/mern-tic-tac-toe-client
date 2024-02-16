@@ -24,9 +24,20 @@ export function AuthApi() {
     return res.data;
   };
 
+  const updateProfile = async (payload: any, token: string) => {
+    const res = await axios.put(`${ENDPOINTS.auth}/profile`, payload, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return res.data;
+  };
+
   return {
     signin,
     signup,
     me,
+    updateProfile,
   };
 }
