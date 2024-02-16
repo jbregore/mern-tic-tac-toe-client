@@ -13,13 +13,13 @@ export default function UnProtectedLayout({
   const router = useRouter();
   const pathname = usePathname();
   const { isAuthenticated } = useUser();
-  const [user, setUser] = useState(false);
+  const [authorize, setAuthorize] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const user = await isAuthenticated();
-      setUser(user);
+      const result = await isAuthenticated();
+      setAuthorize(result);
       setIsLoading(false);
     };
 
@@ -34,7 +34,7 @@ export default function UnProtectedLayout({
     );
   }
 
-  if (user && !isLoading) {
+  if (authorize && !isLoading) {
     router.push("/play");
   }
 
