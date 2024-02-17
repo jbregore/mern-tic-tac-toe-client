@@ -13,6 +13,8 @@ const Board = (props: BoardProps) => {
     setIsMyTurn,
     setBoardTitle,
   } = props;
+
+  const [winner, setWinner] = useState("");
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
 
   const chooseSquare = (square: number) => {
@@ -45,6 +47,28 @@ const Board = (props: BoardProps) => {
     setBoard(boardData);
   };
 
+  const checkWinner = () => {
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    for (let combination of winningCombinations) {
+      const [a, b, c] = combination;
+      if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+        return board[a];
+      }
+    }
+
+    return null;
+  };
+
   useEffect(() => {
     socket.on("gameplay:updated", handleGameUpdated);
 
@@ -52,6 +76,20 @@ const Board = (props: BoardProps) => {
       socket.on("gameplay:updated", handleGameUpdated);
     };
   }, []);
+
+  useEffect(() => {
+    const winner = checkWinner();
+    if (winner) {
+      console.log(`User ${winner} wins the game!`);
+
+      const winnerUser = isMyTurn ? opponent : user;
+      const loserUser = isMyTurn ? user : opponent;
+      console.log("Winner is ", winnerUser);
+      console.log("Loser is ", loserUser);
+    } else {
+      console.log("Draw ");
+    }
+  }, [board]);
 
   return (
     <div className="w-full mb-4">
