@@ -19,4 +19,5 @@ export interface WaitModalProps extends DefaultModalProps {
 
 export interface InvitedModalProps extends DefaultModalProps {
   inviterUser: UserProps;
+  onAccept: any;
 }

@@ -7,7 +7,7 @@ import { socket } from "@/utils/socket";
 import { useUserStore } from "@/zustand/store";
 
 const InvitedModal = (props: InvitedModalProps) => {
-  const { visible, onClose, inviterUser } = props;
+  const { visible, onClose, inviterUser, onAccept } = props;
   const { user } = useUserStore();
 
   return (
@@ -22,6 +22,7 @@ const InvitedModal = (props: InvitedModalProps) => {
         <div className="flex mt-6 space-x-2 md:space-y-0 items-start justify-end ">
           <div className=" md:w-32 ">
             <Button
+              onClick={onAccept}
               title="Accept"
               style="text-white bg-blue-600 w-full"
               type="button"

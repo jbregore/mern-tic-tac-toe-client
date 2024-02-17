@@ -1,16 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Navbar from "@/components/navbar/Navbar";
 import Player from "@/components/play/Player";
 import PlayerHistory from "@/components/play/PlayerHistory";
 import Title from "@/components/texts/Title";
 import Game from "@/components/play/Game";
 import { socket } from "@/utils/socket";
 import { useUserStore } from "@/zustand/store";
-import { useRouter } from "next/navigation";
 import { UserProps } from "@/zustand/interfaces";
 import InvitedModal from "@/components/modals/InvitedModal";
-import { showToastError } from "@/components/toast/ToastAlert";
+import {
+  showToastError,
+  showToastSuccess,
+} from "@/components/toast/ToastAlert";
 import InviteModal from "@/components/modals/InviteModal";
 import WaitModal from "@/components/modals/WaitModal";
 
@@ -21,6 +22,13 @@ const Play = () => {
   const [isInvited, setIsInvited] = useState(false);
   const [isInvitationVisible, setIsInvitationVisible] = useState(false);
   const [waitModal, setWaitModal] = useState(false);
+  const [rival, setRival] = useState<UserProps>({
+    uuid: "",
+    first_name: "",
+    last_name: "",
+    username: "",
+    status: "online",
+  });
 
   const [inviterUser, setInviterUser] = useState<UserProps>({
     uuid: "",
@@ -37,10 +45,6 @@ const Play = () => {
     status: "online",
   });
 
-  const handleStartGame = () => {
-    setIsGameStarted(true);
-  };
-
   const handleStopGame = () => {
     setIsGameStarted(false);
   };
@@ -50,16 +54,14 @@ const Play = () => {
     setInvitedUser(user);
   };
 
-  const handleGameInvite = (inviterUser: any) => {
-    // console.log("inviterUser ", inviterUser);
+  const handleGameInvite = (inviterUser: UserProps) => {
     if (inviterUser) {
       setIsInvited(true);
       setInviterUser(inviterUser);
     }
   };
 
-  const handleGameDecline = (declinerUser: any) => {
-    console.log("declinerUser ", declinerUser);
+  const handleGameDecline = (declinerUser: UserProps) => {
     if (declinerUser) {
       showToastError(
         `${
@@ -70,11 +72,33 @@ const Play = () => {
     }
   };
 
+  const handleAcceptInvitation = () => {
+    socket.emit("invite:accept", inviterUser, user);
+    setIsGameStarted(true);
+    setIsInvited(false);
+    setRival(inviterUser);
+  };
+
+  const handleStartGame = (invitedUser: UserProps) => {
+    showToastSuccess(
+      `${
+        invitedUser.first_name + " " + invitedUser.last_name
+      } accepted your invitation`
+    );
+    setIsGameStarted(true);
+    setWaitModal(false);
+    setRival(invitedUser);
+  };
+
   useEffect(() => {
     if (user.uuid !== "") {
       socket.emit("set-user", user);
       socket.on("get-users", (users) => {
-        setOnlineUsers(users);
+        console.log("users ", users);
+        const filteredUsers = users.filter(
+          (u: any) => u.user.uuid !== user.uuid
+        );
+        setOnlineUsers(filteredUsers);
       });
     }
   }, [user]);
@@ -82,9 +106,12 @@ const Play = () => {
   useEffect(() => {
     socket.on("game:invitation", handleGameInvite);
     socket.on("game:decline", handleGameDecline);
+    socket.on("game:start", handleStartGame);
 
     return () => {
+      socket.off("game:invitation", handleGameInvite);
       socket.off("game:decline", handleGameDecline);
+      socket.on("game:start", handleStartGame);
     };
   }, []);
 
@@ -98,15 +125,19 @@ const Play = () => {
               <div>
                 <Title title="Online Players" />
 
-                {/* <p>There's no online players right now</p> */}
-                {onlineUsers.map((item: any, index: number) => (
-                  <Player
-                    key={index}
-                    startGame={handleStartGame}
-                    data={item.user}
-                    handleInvite={() => handleInvite(item.user)}
-                  />
-                ))}
+                {onlineUsers.length === 0 ? (
+                  <p>There's no online players right now</p>
+                ) : (
+                  <>
+                    {onlineUsers.map((item: any, index: number) => (
+                      <Player
+                        key={index}
+                        data={item.user}
+                        handleInvite={() => handleInvite(item.user)}
+                      />
+                    ))}
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -116,7 +147,11 @@ const Play = () => {
           {/* game view  */}
           <div className="max-w-screen-xl flex flex-wrap items-center justify-between md:mx-auto mx-4">
             <div className="w-full bg-white border border-gray-200 rounded-lg shadow-sm p-4 ">
-              <Title title="Youre playing against Kosang Tibor" />
+              <Title
+                title={`Youre playing against ${
+                  rival.first_name + " " + rival.last_name
+                }`}
+              />
 
               <div className="flex flex-col lg:flex-row justify-between lg:space-x-4 space-y-4 lg:space-y-0">
                 <Game stopGame={handleStopGame} />
@@ -139,6 +174,7 @@ const Play = () => {
         visible={isInvited}
         onClose={() => setIsInvited(false)}
         inviterUser={inviterUser}
+        onAccept={handleAcceptInvitation}
       />
 
       <WaitModal
