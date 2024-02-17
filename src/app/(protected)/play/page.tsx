@@ -1,13 +1,17 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Player from "@/components/play/Player";
 import PlayerHistory from "@/components/play/PlayerHistory";
 import Title from "@/components/texts/Title";
 import Game from "@/components/play/Game";
+import { socket } from "@/utils/socket";
+import { useUserStore } from "@/zustand/store";
 
 const Play = () => {
+  const [isConnected, setIsConnected] = useState(socket.connected);
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const { user } = useUserStore();
 
   const handleStartGame = () => {
     setIsGameStarted(true);
@@ -16,6 +20,10 @@ const Play = () => {
   const handleStopGame = () => {
     setIsGameStarted(false);
   };
+
+  useEffect(() => {
+    socket.connect();
+  }, [socket, user]);
 
   return (
     <>

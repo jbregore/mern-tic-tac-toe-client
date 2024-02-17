@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import Spinner from "@/components/buttons/Spinner";
 import { useRouter } from "next/navigation";
 import Navbar from "@/components/navbar/Navbar";
+import { AuthApi } from "@/api/AuthApi";
+import { useUserStore } from "@/zustand/store";
+import Cookies from "js-cookie";
 
 export default function ProtectedLayout({
   children,
@@ -16,6 +19,8 @@ export default function ProtectedLayout({
   const { isAuthenticated } = useUser();
   const [authorize, setAuthorize] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const { signout } = AuthApi();
+  const { token } = useUserStore();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +30,14 @@ export default function ProtectedLayout({
     };
 
     fetchData();
+
+    const handleBeforeUnload = async (event: any) => {
+      event.preventDefault();
+      Cookies.remove("token");
+      await signout(token);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
   }, [pathname]);
 
   if (!authorize && !isLoading) {
