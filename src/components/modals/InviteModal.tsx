@@ -3,12 +3,12 @@ import Modal from "./Modal";
 import Button from "../buttons/Button";
 import { InviteModalProps } from "./interfaces";
 import Title from "../texts/Title";
-import WaitModal from "./WaitModal";
+import { socket } from "@/utils/socket";
+import { useUserStore } from "@/zustand/store";
 
 const InviteModal = (props: InviteModalProps) => {
-  const { visible, onClose, startGame, userName } = props;
-
-  const [waitModal, setWaitModal] = useState(false);
+  const { visible, onClose, user, userName, onAccept } = props;
+  const { user: inviter } = useUserStore();
 
   return (
     <>
@@ -20,7 +20,8 @@ const InviteModal = (props: InviteModalProps) => {
             <div className=" md:w-32 ">
               <Button
                 onClick={() => {
-                  setWaitModal(true);
+                  socket.emit("invite:user", inviter, user.uuid);
+                  onAccept(true);
                   onClose(false);
                 }}
                 title="Yes"
@@ -39,12 +40,6 @@ const InviteModal = (props: InviteModalProps) => {
           </div>
         </div>
       </Modal>
-
-      <WaitModal
-        userName={userName}
-        visible={waitModal}
-        onClose={() => setWaitModal(false)}
-      />
     </>
   );
 };

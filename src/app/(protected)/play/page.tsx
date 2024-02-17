@@ -8,12 +8,34 @@ import Game from "@/components/play/Game";
 import { socket } from "@/utils/socket";
 import { useUserStore } from "@/zustand/store";
 import { useRouter } from "next/navigation";
+import { UserProps } from "@/zustand/interfaces";
+import InvitedModal from "@/components/modals/InvitedModal";
+import { showToastError } from "@/components/toast/ToastAlert";
+import InviteModal from "@/components/modals/InviteModal";
+import WaitModal from "@/components/modals/WaitModal";
 
 const Play = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const { user } = useUserStore();
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const router = useRouter();
+  const [isInvited, setIsInvited] = useState(false);
+  const [isInvitationVisible, setIsInvitationVisible] = useState(false);
+  const [waitModal, setWaitModal] = useState(false);
+
+  const [inviterUser, setInviterUser] = useState<UserProps>({
+    uuid: "",
+    first_name: "",
+    last_name: "",
+    username: "",
+    status: "online",
+  });
+  const [invitedUser, setInvitedUser] = useState<UserProps>({
+    uuid: "",
+    first_name: "",
+    last_name: "",
+    username: "",
+    status: "online",
+  });
 
   const handleStartGame = () => {
     setIsGameStarted(true);
@@ -21,6 +43,31 @@ const Play = () => {
 
   const handleStopGame = () => {
     setIsGameStarted(false);
+  };
+
+  const handleInvite = (user: UserProps) => {
+    setIsInvitationVisible(true);
+    setInvitedUser(user);
+  };
+
+  const handleGameInvite = (inviterUser: any) => {
+    // console.log("inviterUser ", inviterUser);
+    if (inviterUser) {
+      setIsInvited(true);
+      setInviterUser(inviterUser);
+    }
+  };
+
+  const handleGameDecline = (declinerUser: any) => {
+    console.log("declinerUser ", declinerUser);
+    if (declinerUser) {
+      showToastError(
+        `${
+          declinerUser.first_name + " " + declinerUser.last_name
+        } declined your invitation`
+      );
+      setWaitModal(false);
+    }
   };
 
   useEffect(() => {
@@ -31,6 +78,15 @@ const Play = () => {
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    socket.on("game:invitation", handleGameInvite);
+    socket.on("game:decline", handleGameDecline);
+
+    return () => {
+      socket.off("game:decline", handleGameDecline);
+    };
+  }, []);
 
   return (
     <>
@@ -48,6 +104,7 @@ const Play = () => {
                     key={index}
                     startGame={handleStartGame}
                     data={item.user}
+                    handleInvite={() => handleInvite(item.user)}
                   />
                 ))}
               </div>
@@ -69,6 +126,26 @@ const Play = () => {
           </div>
         </>
       )}
+
+      <InviteModal
+        userName={invitedUser.first_name + " " + invitedUser.last_name}
+        user={invitedUser}
+        visible={isInvitationVisible}
+        onAccept={() => setWaitModal(true)}
+        onClose={() => setIsInvitationVisible(false)}
+      />
+
+      <InvitedModal
+        visible={isInvited}
+        onClose={() => setIsInvited(false)}
+        inviterUser={inviterUser}
+      />
+
+      <WaitModal
+        userName={invitedUser.first_name + " " + invitedUser.last_name}
+        visible={waitModal}
+        onClose={() => setWaitModal(false)}
+      />
     </>
   );
 };

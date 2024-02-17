@@ -2,15 +2,22 @@ import React from "react";
 import Modal from "./Modal";
 import Title from "../texts/Title";
 import Button from "../buttons/Button";
-import { DefaultModalProps } from "./interfaces";
+import { InvitedModalProps } from "./interfaces";
+import { socket } from "@/utils/socket";
+import { useUserStore } from "@/zustand/store";
 
-const InvitedModal = (props: DefaultModalProps) => {
-  const { visible, onClose } = props;
+const InvitedModal = (props: InvitedModalProps) => {
+  const { visible, onClose, inviterUser } = props;
+  const { user } = useUserStore();
 
   return (
     <Modal visible={visible}>
       <div className="relative bg-white w-[500px] max-h-[80%] overflow-auto rounded-lg shadow dark:bg-gray-700 p-4">
-        <Title title={`Kosang Tibog invited you to a new game`} />
+        <Title
+          title={`${
+            inviterUser.first_name + " " + inviterUser.last_name
+          } invited you to a new game`}
+        />
 
         <div className="flex mt-6 space-x-2 md:space-y-0 items-start justify-end ">
           <div className=" md:w-32 ">
@@ -22,7 +29,10 @@ const InvitedModal = (props: DefaultModalProps) => {
           </div>
           <div className="md:w-32">
             <Button
-              onClick={() => onClose(false)}
+              onClick={() => {
+                socket.emit("invite:decline", user, inviterUser.uuid);
+                onClose(false);
+              }}
               title="Decline"
               style="text-white bg-red-600 w-full"
               type="button"

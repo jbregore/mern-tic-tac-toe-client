@@ -1,13 +1,9 @@
 "use client";
-import React, { useState } from "react";
-import InviteModal from "../modals/InviteModal";
+import React, { useEffect, useState } from "react";
 import Button from "../buttons/Button";
-import InvitedModal from "../modals/InvitedModal";
 
 const Player = (props: any) => {
-  const { startGame, data } = props;
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isInvited, setIsInvited] = useState(false);
+  const { data, handleInvite } = props;
 
   return (
     <>
@@ -22,21 +18,13 @@ const Player = (props: any) => {
 
         <div>
           <Button
-            onClick={() => setIsModalVisible(!isModalVisible)}
+            onClick={handleInvite}
             title="Invite"
             style="text-white bg-blue-600 w-full"
             type="button"
           />
         </div>
       </div>
-      <InviteModal
-        userName={data.first_name + " " + data.last_name}
-        startGame={startGame}
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-      />
-
-      <InvitedModal visible={isInvited} onClose={() => setIsInvited(false)} />
     </>
   );
 };
