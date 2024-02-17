@@ -1,24 +1,60 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Square from "./Square";
+import { socket } from "@/utils/socket";
 
-const Board = () => {
+const Board = (props: any) => {
+  const { user, inviterUser, opponent, turn, setTurn, isMyTurn, setIsMyTurn } =
+    props;
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
-  const [player, setPlayer] = useState("X");
-  const [turn, setTurn] = useState("X");
 
   const chooseSquare = (square: number) => {
-    if (turn === player && board[square] === "") {
-      setTurn(player === "X" ? "O" : "X");
-      setBoard(
-        board.map((item: string, index: number) => {
-          if (index === square && item === "") {
-            return player;
-          }
-          return item;
-        })
-      );
+    console.log("user ", user);
+    console.log("opponent ", opponent);
+    if (isMyTurn && board[square] === "") {
+      const newTurn = turn === "X" ? "O" : "X";
+      setTurn(newTurn);
+
+      setIsMyTurn(false);
+
+      const boardData = board.map((item: string, index: number) => {
+        if (index === square && item === "") {
+          return turn;
+        }
+        return item;
+      });
+
+      setBoard(boardData);
+      socket.emit("gameplay", newTurn, user, opponent, boardData);
     }
+    // if (turn === player && board[square] === "") {
+    //   // setTurn(player === "X" ? "O" : "X");
+    //   setBoard(
+    //     board.map((item: string, index: number) => {
+    //       if (index === square && item === "") {
+    //         return player;
+    //       }
+    //       return item;
+    //     })
+    //   );
+    // }
   };
+
+  const handleGameUpdated = (
+    turn: any,
+    me: any,
+    opponent: any,
+    boardData: any
+  ) => {
+    setBoard(boardData);
+  };
+
+  useEffect(() => {
+    socket.on("gameplay:updated", handleGameUpdated);
+
+    return () => {
+      socket.on("gameplay:updated", handleGameUpdated);
+    };
+  }, []);
 
   return (
     <div className="w-full mb-4">

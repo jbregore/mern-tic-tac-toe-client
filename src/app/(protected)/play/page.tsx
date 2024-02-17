@@ -22,13 +22,16 @@ const Play = () => {
   const [isInvited, setIsInvited] = useState(false);
   const [isInvitationVisible, setIsInvitationVisible] = useState(false);
   const [waitModal, setWaitModal] = useState(false);
-  const [rival, setRival] = useState<UserProps>({
+  const [opponent, setOpponent] = useState<UserProps>({
     uuid: "",
     first_name: "",
     last_name: "",
     username: "",
     status: "online",
   });
+  const [boardTitle, setBoardTitle] = useState("");
+  const [isMyTurn, setIsMyTurn] = useState(false);
+  const [turn, setTurn] = useState("X");
 
   const [inviterUser, setInviterUser] = useState<UserProps>({
     uuid: "",
@@ -76,7 +79,10 @@ const Play = () => {
     socket.emit("invite:accept", inviterUser, user);
     setIsGameStarted(true);
     setIsInvited(false);
-    setRival(inviterUser);
+    setOpponent(inviterUser);
+    setBoardTitle("Opponents turn (O)");
+    setIsMyTurn(false);
+    setTurn("O");
   };
 
   const handleStartGame = (invitedUser: UserProps) => {
@@ -87,7 +93,26 @@ const Play = () => {
     );
     setIsGameStarted(true);
     setWaitModal(false);
-    setRival(invitedUser);
+    setOpponent(invitedUser);
+    setBoardTitle("Your turn (X)");
+    setIsMyTurn(true);
+    setTurn("X");
+  };
+
+  const handleGameUpdated = (
+    turn: any,
+    opponent: any,
+    me: any,
+    boardData: any
+  ) => {
+    setIsMyTurn(true);
+    setTurn(turn);
+    setOpponent(opponent);
+    setBoardTitle(`My turn (${turn})`);
+    // console.log("turn ", turn);
+    // console.log("me ", me);
+    // console.log("opponent ", opponent);
+    // console.log("boardData ", boardData);
   };
 
   useEffect(() => {
@@ -107,11 +132,13 @@ const Play = () => {
     socket.on("game:invitation", handleGameInvite);
     socket.on("game:decline", handleGameDecline);
     socket.on("game:start", handleStartGame);
+    socket.on("gameplay:updated", handleGameUpdated);
 
     return () => {
       socket.off("game:invitation", handleGameInvite);
       socket.off("game:decline", handleGameDecline);
       socket.on("game:start", handleStartGame);
+      socket.on("gameplay:updated", handleGameUpdated);
     };
   }, []);
 
@@ -149,12 +176,22 @@ const Play = () => {
             <div className="w-full bg-white border border-gray-200 rounded-lg shadow-sm p-4 ">
               <Title
                 title={`Youre playing against ${
-                  rival.first_name + " " + rival.last_name
+                  opponent.first_name + " " + opponent.last_name
                 }`}
               />
 
               <div className="flex flex-col lg:flex-row justify-between lg:space-x-4 space-y-4 lg:space-y-0">
-                <Game stopGame={handleStopGame} />
+                <Game
+                  stopGame={handleStopGame}
+                  boardTitle={boardTitle}
+                  opponent={opponent}
+                  user={user}
+                  inviterUser={inviterUser}
+                  isMyTurn={isMyTurn}
+                  setIsMyTurn={setIsMyTurn}
+                  turn={turn}
+                  setTurn={setTurn}
+                />
                 <PlayerHistory />
               </div>
             </div>

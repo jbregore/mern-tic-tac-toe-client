@@ -3,13 +3,34 @@ import Button from "../buttons/Button";
 import { GameProps } from "./interfaces";
 import Board from "./Board";
 
-const Game = (props: GameProps) => {
-  const { stopGame } = props;
+const Game = (props: any) => {
+  const {
+    opponent,
+    stopGame,
+    boardTitle,
+    user,
+    inviterUser,
+    isMyTurn,
+    setIsMyTurn,
+    turn,
+    setTurn,
+  } = props;
   const [isStop, setIsStop] = useState(false);
+
   return (
     <div className="w-full ">
-      <Board />
-      <div className="flex justify-center items-center">
+      <p className="text-center mb-2">{boardTitle}</p>
+      <Board
+        opponent={opponent}
+        user={user}
+        inviterUser={inviterUser}
+        isMyTurn={isMyTurn}
+        setIsMyTurn={setIsMyTurn}
+        turn={turn}
+        setTurn={setTurn}
+      />
+
+      {/* <div className="flex justify-center items-center">
         {!isStop ? (
           <>
             <div className="md:w-40">
@@ -44,7 +65,7 @@ const Game = (props: GameProps) => {
             </div>
           </>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
