@@ -2,10 +2,12 @@
 import React, { useState } from "react";
 import InviteModal from "../modals/InviteModal";
 import Button from "../buttons/Button";
+import InvitedModal from "../modals/InvitedModal";
 
 const Player = (props: any) => {
   const { startGame, data } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isInvited, setIsInvited] = useState(false);
 
   return (
     <>
@@ -18,10 +20,6 @@ const Player = (props: any) => {
           </div>
         </div>
 
-        {/* <div className="flex-none mr-4">
-          <p className={`font-bold text-green-700`}>ONLINE</p>
-        </div> */}
-
         <div>
           <Button
             onClick={() => setIsModalVisible(!isModalVisible)}
@@ -32,10 +30,13 @@ const Player = (props: any) => {
         </div>
       </div>
       <InviteModal
+        userName={data.first_name + " " + data.last_name}
         startGame={startGame}
         visible={isModalVisible}
         onClose={() => setIsModalVisible(false)}
       />
+
+      <InvitedModal visible={isInvited} onClose={() => setIsInvited(false)} />
     </>
   );
 };
