@@ -1,20 +1,28 @@
 import React, { useEffect, useState } from "react";
 import Square from "./Square";
 import { socket } from "@/utils/socket";
+import { BoardProps } from "./interfaces";
 
-const Board = (props: any) => {
-  const { user, inviterUser, opponent, turn, setTurn, isMyTurn, setIsMyTurn } =
-    props;
+const Board = (props: BoardProps) => {
+  const {
+    user,
+    opponent,
+    turn,
+    setTurn,
+    isMyTurn,
+    setIsMyTurn,
+    setBoardTitle,
+  } = props;
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
 
   const chooseSquare = (square: number) => {
-    console.log("user ", user);
-    console.log("opponent ", opponent);
     if (isMyTurn && board[square] === "") {
       const newTurn = turn === "X" ? "O" : "X";
       setTurn(newTurn);
 
       setIsMyTurn(false);
+
+      setBoardTitle(`Opponents Turn (${newTurn})`);
 
       const boardData = board.map((item: string, index: number) => {
         if (index === square && item === "") {
@@ -26,17 +34,6 @@ const Board = (props: any) => {
       setBoard(boardData);
       socket.emit("gameplay", newTurn, user, opponent, boardData);
     }
-    // if (turn === player && board[square] === "") {
-    //   // setTurn(player === "X" ? "O" : "X");
-    //   setBoard(
-    //     board.map((item: string, index: number) => {
-    //       if (index === square && item === "") {
-    //         return player;
-    //       }
-    //       return item;
-    //     })
-    //   );
-    // }
   };
 
   const handleGameUpdated = (

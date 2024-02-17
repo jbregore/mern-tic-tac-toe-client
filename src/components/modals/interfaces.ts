@@ -8,13 +8,12 @@ export interface DefaultModalProps {
 export interface ChangePasswordModalProps extends DefaultModalProps {}
 
 export interface InviteModalProps extends DefaultModalProps {
-  user: UserProps;
-  userName: string;
+  invitedUser: UserProps;
   onAccept: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface WaitModalProps extends DefaultModalProps {
-  userName: string;
+  invitedUser: UserProps;
 }
 
 export interface InvitedModalProps extends DefaultModalProps {

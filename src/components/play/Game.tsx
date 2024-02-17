@@ -3,27 +3,26 @@ import Button from "../buttons/Button";
 import { GameProps } from "./interfaces";
 import Board from "./Board";
 
-const Game = (props: any) => {
+const Game = (props: GameProps) => {
   const {
-    opponent,
-    stopGame,
     boardTitle,
+    setBoardTitle,
+    opponent,
     user,
-    inviterUser,
     isMyTurn,
     setIsMyTurn,
     turn,
     setTurn,
   } = props;
-  const [isStop, setIsStop] = useState(false);
 
   return (
     <div className="w-full ">
-      <p className="text-center mb-2">{boardTitle}</p>
+      <p className="text-center mb-2 font-semibold">{boardTitle}</p>
       <Board
+        boardTitle={boardTitle}
+        setBoardTitle={setBoardTitle}
         opponent={opponent}
         user={user}
-        inviterUser={inviterUser}
         isMyTurn={isMyTurn}
         setIsMyTurn={setIsMyTurn}
         turn={turn}

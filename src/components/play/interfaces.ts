@@ -1,15 +1,17 @@
 import { UserProps } from "@/zustand/interfaces";
 
 export interface GameProps {
-  stopGame: () => void;
   boardTitle: string;
+  setBoardTitle: React.Dispatch<React.SetStateAction<string>>;
   user: UserProps;
-  inviterUser: UserProps;
+  opponent: UserProps;
   isMyTurn: boolean;
   setIsMyTurn: React.Dispatch<React.SetStateAction<boolean>>;
   turn: string;
   setTurn: React.Dispatch<React.SetStateAction<string>>;
 }
+
+export interface BoardProps extends GameProps {}
 
 export interface SquareProps {
   onSquareClick: any;

@@ -14,47 +14,46 @@ import {
 } from "@/components/toast/ToastAlert";
 import InviteModal from "@/components/modals/InviteModal";
 import WaitModal from "@/components/modals/WaitModal";
+import useInvite from "@/hooks/useInvite";
+import useInvited from "@/hooks/useInvited";
+import useGame from "@/hooks/useGame";
 
 const Play = () => {
-  const [isGameStarted, setIsGameStarted] = useState(false);
   const { user } = useUserStore();
-  const [onlineUsers, setOnlineUsers] = useState([]);
-  const [isInvited, setIsInvited] = useState(false);
-  const [isInvitationVisible, setIsInvitationVisible] = useState(false);
-  const [waitModal, setWaitModal] = useState(false);
-  const [opponent, setOpponent] = useState<UserProps>({
-    uuid: "",
-    first_name: "",
-    last_name: "",
-    username: "",
-    status: "online",
-  });
-  const [boardTitle, setBoardTitle] = useState("");
-  const [isMyTurn, setIsMyTurn] = useState(false);
-  const [turn, setTurn] = useState("X");
 
-  const [inviterUser, setInviterUser] = useState<UserProps>({
-    uuid: "",
-    first_name: "",
-    last_name: "",
-    username: "",
-    status: "online",
-  });
-  const [invitedUser, setInvitedUser] = useState<UserProps>({
-    uuid: "",
-    first_name: "",
-    last_name: "",
-    username: "",
-    status: "online",
-  });
+  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  //invite
+  const {
+    isInvitationVisible,
+    setIsInvitationVisible,
+    invitedUser,
+    handleInvite,
+    waitModal,
+    setWaitModal,
+    inviterUser,
+    setInviterUser,
+  } = useInvite();
+
+  //invited
+  const { isInvited, setIsInvited } = useInvited();
+
+  //game
+  const {
+    isGameStarted,
+    setIsGameStarted,
+    opponent,
+    setOpponent,
+    boardTitle,
+    setBoardTitle,
+    isMyTurn,
+    setIsMyTurn,
+    turn,
+    setTurn,
+  } = useGame();
 
   const handleStopGame = () => {
     setIsGameStarted(false);
-  };
-
-  const handleInvite = (user: UserProps) => {
-    setIsInvitationVisible(true);
-    setInvitedUser(user);
   };
 
   const handleGameInvite = (inviterUser: UserProps) => {
@@ -109,10 +108,6 @@ const Play = () => {
     setTurn(turn);
     setOpponent(opponent);
     setBoardTitle(`My turn (${turn})`);
-    // console.log("turn ", turn);
-    // console.log("me ", me);
-    // console.log("opponent ", opponent);
-    // console.log("boardData ", boardData);
   };
 
   useEffect(() => {
@@ -182,11 +177,10 @@ const Play = () => {
 
               <div className="flex flex-col lg:flex-row justify-between lg:space-x-4 space-y-4 lg:space-y-0">
                 <Game
-                  stopGame={handleStopGame}
                   boardTitle={boardTitle}
+                  setBoardTitle={setBoardTitle}
                   opponent={opponent}
                   user={user}
-                  inviterUser={inviterUser}
                   isMyTurn={isMyTurn}
                   setIsMyTurn={setIsMyTurn}
                   turn={turn}
@@ -200,8 +194,7 @@ const Play = () => {
       )}
 
       <InviteModal
-        userName={invitedUser.first_name + " " + invitedUser.last_name}
-        user={invitedUser}
+        invitedUser={invitedUser}
         visible={isInvitationVisible}
         onAccept={() => setWaitModal(true)}
         onClose={() => setIsInvitationVisible(false)}
@@ -215,7 +208,7 @@ const Play = () => {
       />
 
       <WaitModal
-        userName={invitedUser.first_name + " " + invitedUser.last_name}
+        invitedUser={invitedUser}
         visible={waitModal}
         onClose={() => setWaitModal(false)}
       />

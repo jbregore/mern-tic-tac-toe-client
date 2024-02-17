@@ -6,12 +6,15 @@ import { WaitModalProps } from "./interfaces";
 import Button from "../buttons/Button";
 
 const WaitModal = (props: WaitModalProps) => {
-  const { visible, onClose, userName } = props;
+  const { visible, onClose, invitedUser } = props;
+
+  const invitedUserFullName =
+    invitedUser.first_name + " " + invitedUser.last_name;
 
   return (
     <Modal visible={visible}>
       <div className="relative bg-white w-[500px] max-h-[80%] overflow-auto rounded-lg shadow dark:bg-gray-700 p-4">
-        <Title title={`Waiting for ${userName} response`} />
+        <Title title={`Waiting for ${invitedUserFullName} response`} />
 
         <div className="flex mt-6 space-x-2 md:space-y-0 items-center justify-center py-6">
           <Spinner style="w-12 h-12 ml-2" />
