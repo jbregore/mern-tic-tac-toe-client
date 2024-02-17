@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "@/zustand/store";
 import { AuthApi } from "@/api/AuthApi";
+import { socket } from "@/utils/socket";
 
 const Navbar = (props: NavbarProps) => {
   const router = useRouter();
@@ -24,9 +25,10 @@ const Navbar = (props: NavbarProps) => {
 
   const handleLogout = async () => {
     Cookies.remove("token");
-    router.push("/");
-    setUser(null);
     await signout(token);
+    socket.emit("logout");
+    setUser(null);
+    router.push("/");
   };
 
   return (

@@ -4,7 +4,7 @@ import InviteModal from "../modals/InviteModal";
 import Button from "../buttons/Button";
 
 const Player = (props: any) => {
-  const { startGame } = props;
+  const { startGame, data } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   return (
@@ -13,7 +13,7 @@ const Player = (props: any) => {
         <div className="grow flex items-center space-x-2">
           <div className="bg-green-600 w-4 h-4 rounded-full"></div>
           <div>
-            <p>Kosang Tibor</p>
+            <p>{data.first_name + " " + data.last_name}</p>
             <p className="text-sm text-gray-600">Rank #1</p>
           </div>
         </div>

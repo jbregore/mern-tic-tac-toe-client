@@ -7,11 +7,13 @@ import Title from "@/components/texts/Title";
 import Game from "@/components/play/Game";
 import { socket } from "@/utils/socket";
 import { useUserStore } from "@/zustand/store";
+import { useRouter } from "next/navigation";
 
 const Play = () => {
-  const [isConnected, setIsConnected] = useState(socket.connected);
   const [isGameStarted, setIsGameStarted] = useState(false);
   const { user } = useUserStore();
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  const router = useRouter();
 
   const handleStartGame = () => {
     setIsGameStarted(true);
@@ -22,8 +24,13 @@ const Play = () => {
   };
 
   useEffect(() => {
-    socket.connect();
-  }, [socket, user]);
+    if (user.uuid !== "") {
+      socket.emit("set-user", user);
+      socket.on("get-users", (users) => {
+        setOnlineUsers(users);
+      });
+    }
+  }, [user]);
 
   return (
     <>
@@ -36,8 +43,12 @@ const Play = () => {
                 <Title title="Online Players" />
 
                 {/* <p>There's no online players right now</p> */}
-                {[0, 1, 2].map((item: any, index: number) => (
-                  <Player key={index} startGame={handleStartGame} />
+                {onlineUsers.map((item: any, index: number) => (
+                  <Player
+                    key={index}
+                    startGame={handleStartGame}
+                    data={item.user}
+                  />
                 ))}
               </div>
             </div>
