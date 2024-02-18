@@ -17,6 +17,7 @@ import WaitModal from "@/components/modals/WaitModal";
 import useInvite from "@/hooks/useInvite";
 import useInvited from "@/hooks/useInvited";
 import useGame from "@/hooks/useGame";
+import GameDoneModal from "@/components/modals/GameDoneModal";
 
 const Play = () => {
   const { user } = useUserStore();
@@ -50,6 +51,10 @@ const Play = () => {
     setIsMyTurn,
     turn,
     setTurn,
+    gameMessage,
+    setGameMessage,
+    isGameDoneModalVisible,
+    setIsGameDoneModalVisible,
   } = useGame();
 
   const handleStopGame = () => {
@@ -61,6 +66,10 @@ const Play = () => {
       setIsInvited(true);
       setInviterUser(inviterUser);
     }
+  };
+
+  const handleCancelInvite = () => {
+    setIsInvited(false);
   };
 
   const handleGameDecline = (declinerUser: UserProps) => {
@@ -110,6 +119,26 @@ const Play = () => {
     setBoardTitle(`My turn (${turn})`);
   };
 
+  const handleGameDone = (message: string, isWinner: boolean) => {
+    setIsGameDoneModalVisible(true);
+    setGameMessage(message);
+  };
+
+  const handleRematch = () => {
+    showToastSuccess(`Rematch !`);
+    setIsGameDoneModalVisible(false);
+  };
+
+  const handleDeclineRematch = (decliner: UserProps | null) => {
+    if (decliner) {
+      showToastError(
+        `${decliner.first_name + " " + decliner.last_name} don't want a rematch`
+      );
+    }
+    setIsGameDoneModalVisible(false);
+    setIsGameStarted(false);
+  };
+
   useEffect(() => {
     if (user.uuid !== "") {
       socket.emit("set-user", user);
@@ -127,13 +156,21 @@ const Play = () => {
     socket.on("game:invitation", handleGameInvite);
     socket.on("game:decline", handleGameDecline);
     socket.on("game:start", handleStartGame);
+    socket.on("game:close", handleCancelInvite);
     socket.on("gameplay:updated", handleGameUpdated);
+    socket.on("gameplay:done", handleGameDone);
+    socket.on("start:new_match", handleRematch);
+    socket.on("cancel:new_match", handleDeclineRematch);
 
     return () => {
       socket.off("game:invitation", handleGameInvite);
       socket.off("game:decline", handleGameDecline);
       socket.on("game:start", handleStartGame);
+      socket.on("game:close", handleCancelInvite);
       socket.on("gameplay:updated", handleGameUpdated);
+      socket.on("gameplay:done", handleGameDone);
+      socket.on("start:new_match", handleRematch);
+      socket.on("cancel:new_match", handleDeclineRematch);
     };
   }, []);
 
@@ -210,7 +247,20 @@ const Play = () => {
       <WaitModal
         invitedUser={invitedUser}
         visible={waitModal}
-        onClose={() => setWaitModal(false)}
+        onClose={() => {
+          socket.emit("invite:cancel", invitedUser);
+          setWaitModal(false);
+        }}
+      />
+
+      <GameDoneModal
+        user={user}
+        opponent={opponent}
+        visible={isGameDoneModalVisible}
+        onClose={() => {
+          setIsGameDoneModalVisible(false);
+        }}
+        message={gameMessage}
       />
     </>
   );

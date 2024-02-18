@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Square from "./Square";
 import { socket } from "@/utils/socket";
 import { BoardProps } from "./interfaces";
+import { UserProps } from "@/zustand/interfaces";
 
 const Board = (props: BoardProps) => {
   const {
@@ -14,7 +15,6 @@ const Board = (props: BoardProps) => {
     setBoardTitle,
   } = props;
 
-  const [winner, setWinner] = useState("");
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
 
   const chooseSquare = (square: number) => {
@@ -69,11 +69,23 @@ const Board = (props: BoardProps) => {
     return null;
   };
 
+  const handleRematch = () => {
+    setBoard(["", "", "", "", "", "", "", "", ""]);
+  };
+
+  const handleDeclineRematch = (decliner: UserProps | null) => {
+    setBoard(["", "", "", "", "", "", "", "", ""]);
+  };
+
   useEffect(() => {
     socket.on("gameplay:updated", handleGameUpdated);
+    socket.on("start:new_match", handleRematch);
+    socket.on("cancel:new_match", handleDeclineRematch);
 
     return () => {
       socket.on("gameplay:updated", handleGameUpdated);
+      socket.on("start:new_match", handleRematch);
+      socket.on("cancel:new_match", handleDeclineRematch);
     };
   }, []);
 
@@ -86,8 +98,13 @@ const Board = (props: BoardProps) => {
       const loserUser = isMyTurn ? user : opponent;
       console.log("Winner is ", winnerUser);
       console.log("Loser is ", loserUser);
+
+      socket.emit("gameplay:finished", true, winnerUser, loserUser);
     } else {
-      console.log("Draw ");
+      if (board.every((square) => square !== "") && !winner) {
+        socket.emit("gameplay:finished", false, user, opponent);
+        console.log("Draw ");
+      }
     }
   }, [board]);
 

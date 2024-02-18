@@ -3,6 +3,8 @@ import React, { useState } from "react";
 
 const useGame = () => {
   const [isGameStarted, setIsGameStarted] = useState(false);
+  const [gameMessage, setGameMessage] = useState("");
+  const [isGameDoneModalVisible, setIsGameDoneModalVisible] = useState(false);
 
   const [opponent, setOpponent] = useState<UserProps>({
     uuid: "",
@@ -27,6 +29,10 @@ const useGame = () => {
     setIsMyTurn,
     turn,
     setTurn,
+    gameMessage,
+    setGameMessage,
+    isGameDoneModalVisible,
+    setIsGameDoneModalVisible,
   };
 };
 
