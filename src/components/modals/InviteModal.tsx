@@ -6,8 +6,8 @@ import Title from "../texts/Title";
 import { socket } from "@/utils/socket";
 import { useUserStore } from "@/zustand/store";
 
-const InviteModal = (props: InviteModalProps) => {
-  const { invitedUser, visible, onClose, onAccept } = props;
+const InviteModal = (props: any) => {
+  const { invitedUser, visible, onClose, onAccept, setFirstMover } = props;
 
   const { user: inviter } = useUserStore();
 
@@ -24,9 +24,8 @@ const InviteModal = (props: InviteModalProps) => {
             <div className=" md:w-32 ">
               <Button
                 onClick={() => {
-                  console.log("inviter ", inviter);
-                  console.log("invitedUser.uuid ", invitedUser.uuid);
                   socket.emit("invite:user", inviter, invitedUser.uuid);
+                  setFirstMover(inviter);
                   onAccept(true);
                   onClose(false);
                 }}

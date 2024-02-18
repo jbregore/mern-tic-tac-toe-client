@@ -23,6 +23,7 @@ const Play = () => {
   const { user } = useUserStore();
 
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [firstMover, setFirstMover] = useState<any>(null);
 
   //invite
   const {
@@ -65,6 +66,7 @@ const Play = () => {
     if (inviterUser) {
       setIsInvited(true);
       setInviterUser(inviterUser);
+      setFirstMover(inviterUser);
     }
   };
 
@@ -85,10 +87,11 @@ const Play = () => {
 
   const handleAcceptInvitation = () => {
     socket.emit("invite:accept", inviterUser, user);
+    setFirstMover(inviterUser);
     setIsGameStarted(true);
     setIsInvited(false);
     setOpponent(inviterUser);
-    setBoardTitle("Opponents turn (O)");
+    setBoardTitle("Opponents turn (X)");
     setIsMyTurn(false);
     setTurn("O");
   };
@@ -141,9 +144,9 @@ const Play = () => {
 
   useEffect(() => {
     if (user.uuid !== "") {
+      console.log("socketID ", socket.id);
       socket.emit("set-user", user);
       socket.on("get-users", (users) => {
-        console.log("users ", users);
         const filteredUsers = users.filter(
           (u: any) => u.user.uuid !== user.uuid
         );
@@ -222,6 +225,8 @@ const Play = () => {
                   setIsMyTurn={setIsMyTurn}
                   turn={turn}
                   setTurn={setTurn}
+                  firstMover={firstMover}
+                  setFirstMover={setFirstMover}
                 />
                 <PlayerHistory />
               </div>
@@ -235,6 +240,7 @@ const Play = () => {
         visible={isInvitationVisible}
         onAccept={() => setWaitModal(true)}
         onClose={() => setIsInvitationVisible(false)}
+        setFirstMover={setFirstMover}
       />
 
       <InvitedModal

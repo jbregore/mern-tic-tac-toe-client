@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "./Modal";
 import Title from "../texts/Title";
 import Button from "../buttons/Button";
 import { socket } from "@/utils/socket";
+import WaitRematchModal from "./WaitRematchModal";
 
 const GameDoneModal = (props: any) => {
   const { visible, onClose, message, user, opponent } = props;
-
+  const [waitRematchInvitation, setWaitRematchInvitation] = useState(false);
   return (
     <Modal visible={visible}>
       <div className="relative bg-white w-[500px] max-h-[80%] overflow-auto rounded-lg shadow dark:bg-gray-700 p-4">
@@ -21,6 +22,8 @@ const GameDoneModal = (props: any) => {
             <Button
               onClick={() => {
                 socket.emit("continue:agreed", user, opponent, true);
+                setWaitRematchInvitation(true);
+                // onClose(false);
               }}
               title="Yes"
               style="text-white bg-blue-600 w-full"
@@ -40,6 +43,16 @@ const GameDoneModal = (props: any) => {
           </div>
         </div>
       </div>
+
+      <WaitRematchModal
+        invitedUser={opponent}
+        visible={waitRematchInvitation}
+        onClose={() => {
+          socket.emit("continue:agreed", user, opponent, false);
+          setWaitRematchInvitation(false);
+          onClose(false);
+        }}
+      />
     </Modal>
   );
 };

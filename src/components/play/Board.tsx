@@ -4,7 +4,7 @@ import { socket } from "@/utils/socket";
 import { BoardProps } from "./interfaces";
 import { UserProps } from "@/zustand/interfaces";
 
-const Board = (props: BoardProps) => {
+const Board = (props: any) => {
   const {
     user,
     opponent,
@@ -13,6 +13,8 @@ const Board = (props: BoardProps) => {
     isMyTurn,
     setIsMyTurn,
     setBoardTitle,
+    firstMover,
+    setFirstMover,
   } = props;
 
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
@@ -34,6 +36,7 @@ const Board = (props: BoardProps) => {
       });
 
       setBoard(boardData);
+
       socket.emit("gameplay", newTurn, user, opponent, boardData);
     }
   };
@@ -92,18 +95,13 @@ const Board = (props: BoardProps) => {
   useEffect(() => {
     const winner = checkWinner();
     if (winner) {
-      console.log(`User ${winner} wins the game!`);
-
       const winnerUser = isMyTurn ? opponent : user;
       const loserUser = isMyTurn ? user : opponent;
-      console.log("Winner is ", winnerUser);
-      console.log("Loser is ", loserUser);
 
       socket.emit("gameplay:finished", true, winnerUser, loserUser);
     } else {
       if (board.every((square) => square !== "") && !winner) {
         socket.emit("gameplay:finished", false, user, opponent);
-        console.log("Draw ");
       }
     }
   }, [board]);

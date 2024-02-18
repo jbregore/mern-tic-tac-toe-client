@@ -28,6 +28,10 @@ export default function ProtectedLayout({
       setIsLoading(false);
     };
 
+    window.addEventListener("beforeunload", () => {
+      socket.emit("logout");
+    });
+
     fetchData();
   }, [pathname]);
 
