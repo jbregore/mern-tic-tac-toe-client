@@ -12,7 +12,6 @@ const Player = (props: any) => {
           <div className="bg-green-600 w-4 h-4 rounded-full"></div>
           <div>
             <p>{data.first_name + " " + data.last_name}</p>
-            <p className="text-sm text-gray-600">Rank #1</p>
           </div>
         </div>
 

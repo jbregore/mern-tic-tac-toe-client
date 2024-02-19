@@ -6,7 +6,7 @@ import { UserProps } from "@/zustand/interfaces";
 import { GameApi } from "@/api/GameApi";
 import { useUserStore } from "@/zustand/store";
 
-const Board = (props: any) => {
+const Board = (props: BoardProps) => {
   const {
     user,
     opponent,
@@ -15,8 +15,6 @@ const Board = (props: any) => {
     isMyTurn,
     setIsMyTurn,
     setBoardTitle,
-    firstMover,
-    setFirstMover,
   } = props;
 
   const { createGame } = GameApi();
@@ -132,6 +130,7 @@ const Board = (props: any) => {
         socket.emit("gameplay:finished", false, user, opponent);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
   return (

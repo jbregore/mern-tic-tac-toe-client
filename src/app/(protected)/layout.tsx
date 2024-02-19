@@ -33,6 +33,7 @@ export default function ProtectedLayout({
     });
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   if (!authorize && !isLoading) {

@@ -5,6 +5,7 @@ const useInvite = () => {
   const [waitModal, setWaitModal] = useState(false);
   const [isInvitationVisible, setIsInvitationVisible] = useState(false);
   const [invitedUser, setInvitedUser] = useState<UserProps>({
+    _id: "",
     uuid: "",
     first_name: "",
     last_name: "",
@@ -12,6 +13,7 @@ const useInvite = () => {
     status: "online",
   });
   const [inviterUser, setInviterUser] = useState<UserProps>({
+    _id: "",
     uuid: "",
     first_name: "",
     last_name: "",

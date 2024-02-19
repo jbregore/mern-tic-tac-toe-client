@@ -6,7 +6,7 @@ import Title from "../texts/Title";
 import { socket } from "@/utils/socket";
 import { useUserStore } from "@/zustand/store";
 
-const InviteModal = (props: any) => {
+const InviteModal = (props: InviteModalProps) => {
   const { invitedUser, visible, onClose, onAccept, setFirstMover } = props;
 
   const { user: inviter } = useUserStore();

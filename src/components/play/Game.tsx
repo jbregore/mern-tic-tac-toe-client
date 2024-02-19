@@ -3,7 +3,7 @@ import Button from "../buttons/Button";
 import { GameProps } from "./interfaces";
 import Board from "./Board";
 
-const Game = (props: any) => {
+const Game = (props: GameProps) => {
   const {
     boardTitle,
     setBoardTitle,
@@ -13,8 +13,6 @@ const Game = (props: any) => {
     setIsMyTurn,
     turn,
     setTurn,
-    firstMover,
-    setFirstMover,
   } = props;
 
   return (
@@ -29,8 +27,6 @@ const Game = (props: any) => {
         setIsMyTurn={setIsMyTurn}
         turn={turn}
         setTurn={setTurn}
-        firstMover={firstMover}
-        setFirstMover={setFirstMover}
       />
 
       {/* <div className="flex justify-center items-center">

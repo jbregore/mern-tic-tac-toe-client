@@ -24,6 +24,7 @@ export default function UnProtectedLayout({
     };
 
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   if (isLoading) {

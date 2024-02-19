@@ -179,6 +179,7 @@ const Play = () => {
       socket.on("start:new_match", handleRematch);
       socket.on("cancel:new_match", handleDeclineRematch);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -192,7 +193,7 @@ const Play = () => {
                 <Title title="Online Players" />
 
                 {onlineUsers.length === 0 ? (
-                  <p>There's no online players right now</p>
+                  <p>There&apos;s no online players right now</p>
                 ) : (
                   <>
                     {onlineUsers.map((item: any, index: number) => (
@@ -229,8 +230,6 @@ const Play = () => {
                   setIsMyTurn={setIsMyTurn}
                   turn={turn}
                   setTurn={setTurn}
-                  firstMover={firstMover}
-                  setFirstMover={setFirstMover}
                 />
                 <PlayerHistory />
               </div>

@@ -5,7 +5,7 @@ import Spinner from "../buttons/Spinner";
 import { WaitModalProps } from "./interfaces";
 import Button from "../buttons/Button";
 
-const WaitRematchModal = (props: any) => {
+const WaitRematchModal = (props: WaitModalProps) => {
   const { visible, onClose, invitedUser } = props;
 
   const invitedUserFullName =

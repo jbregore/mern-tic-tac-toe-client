@@ -7,6 +7,7 @@ const useGame = () => {
   const [isGameDoneModalVisible, setIsGameDoneModalVisible] = useState(false);
 
   const [opponent, setOpponent] = useState<UserProps>({
+    _id: "",
     uuid: "",
     first_name: "",
     last_name: "",
