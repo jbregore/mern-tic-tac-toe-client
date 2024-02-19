@@ -231,7 +231,7 @@ const Play = () => {
                   turn={turn}
                   setTurn={setTurn}
                 />
-                <PlayerHistory />
+                <PlayerHistory opponent={opponent} />
               </div>
             </div>
           </div>

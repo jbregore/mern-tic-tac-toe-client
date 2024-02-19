@@ -14,6 +14,26 @@ export function GameApi() {
     return res.data;
   };
 
+  const getGamesWith = async (
+    token: string,
+    opponentId: string,
+    params: any
+  ) => {
+    console.log("called ");
+    const query = new URLSearchParams(params).toString();
+
+    const res = await axios.get(
+      `${ENDPOINTS.games}?${query}&opponent_id=${opponentId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return res.data;
+  };
+
   const createGame = async (payload: any, token: string) => {
     const res = await axios.post(`${ENDPOINTS.games}`, payload, {
       headers: {
@@ -26,6 +46,7 @@ export function GameApi() {
 
   return {
     getGames,
+    getGamesWith,
     createGame,
   };
 }

@@ -5,7 +5,7 @@ const Square = (props: SquareProps) => {
   const { onSquareClick, value } = props;
   return (
     <div
-      className="bg-blue-300 flex items-center justify-center h-24 text-4xl font-bold"
+      className="bg-blue-300 flex items-center justify-center h-32 text-4xl font-bold"
       onClick={onSquareClick}
     >
       <span className=" font-bold">{value}</span>
