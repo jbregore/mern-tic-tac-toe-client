@@ -59,7 +59,11 @@ const Navbar = (props: NavbarProps) => {
             {/* dropdown menu  */}
             {isOpenProfile && (
               <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100">
-                <div>
+                <div
+                  onClick={() => {
+                    socket.emit("logout");
+                  }}
+                >
                   <Link href="/profile">
                     <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       My Profile
@@ -110,7 +114,7 @@ const Navbar = (props: NavbarProps) => {
               isActive={activeLink == "/history"}
             />
 
-            <div className="block md:hidden" onClick={handleLogout}>
+            <div className="block md:hidden">
               <NavbarLink
                 title="My Profile"
                 link="/profile"
@@ -118,6 +122,7 @@ const Navbar = (props: NavbarProps) => {
               />
               <li
                 className={`block py-2 px-3  rounded md:bg-transparent md:p-0 text-gray-900`}
+                onClick={handleLogout}
               >
                 Logout
               </li>
