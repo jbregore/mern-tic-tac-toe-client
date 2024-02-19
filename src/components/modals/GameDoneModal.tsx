@@ -6,8 +6,15 @@ import { socket } from "@/utils/socket";
 import WaitRematchModal from "./WaitRematchModal";
 
 const GameDoneModal = (props: any) => {
-  const { visible, onClose, message, user, opponent } = props;
-  const [waitRematchInvitation, setWaitRematchInvitation] = useState(false);
+  const {
+    visible,
+    onClose,
+    message,
+    user,
+    opponent,
+    waitRematchInvitation,
+    setWaitRematchInvitation,
+  } = props;
   return (
     <Modal visible={visible}>
       <div className="relative bg-white w-[500px] max-h-[80%] overflow-auto rounded-lg shadow dark:bg-gray-700 p-4">

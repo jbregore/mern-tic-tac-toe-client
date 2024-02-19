@@ -6,6 +6,7 @@ export interface useUserStoreProps {
 }
 
 export interface UserProps {
+  _id: string;
   uuid: string;
   first_name: string;
   last_name: string;

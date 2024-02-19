@@ -3,6 +3,8 @@ import Square from "./Square";
 import { socket } from "@/utils/socket";
 import { BoardProps } from "./interfaces";
 import { UserProps } from "@/zustand/interfaces";
+import { GameApi } from "@/api/GameApi";
+import { useUserStore } from "@/zustand/store";
 
 const Board = (props: any) => {
   const {
@@ -16,6 +18,9 @@ const Board = (props: any) => {
     firstMover,
     setFirstMover,
   } = props;
+
+  const { createGame } = GameApi();
+  const { token } = useUserStore();
 
   const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
 
@@ -80,6 +85,14 @@ const Board = (props: any) => {
     setBoard(["", "", "", "", "", "", "", "", ""]);
   };
 
+  const insertGame = async (payload: any) => {
+    try {
+      await createGame(payload, token);
+    } catch (err: any) {
+      console.log("err ", err);
+    }
+  };
+
   useEffect(() => {
     socket.on("gameplay:updated", handleGameUpdated);
     socket.on("start:new_match", handleRematch);
@@ -98,9 +111,24 @@ const Board = (props: any) => {
       const winnerUser = isMyTurn ? opponent : user;
       const loserUser = isMyTurn ? user : opponent;
 
+      if (winnerUser == user) {
+        insertGame({
+          opponent_id: opponent._id,
+          result: "won",
+        });
+      } else if (loserUser == user) {
+        insertGame({
+          opponent_id: opponent._id,
+          result: "lost",
+        });
+      }
       socket.emit("gameplay:finished", true, winnerUser, loserUser);
     } else {
       if (board.every((square) => square !== "") && !winner) {
+        insertGame({
+          opponent_id: opponent._id,
+          result: "tied",
+        });
         socket.emit("gameplay:finished", false, user, opponent);
       }
     }

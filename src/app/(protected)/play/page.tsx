@@ -25,6 +25,8 @@ const Play = () => {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [firstMover, setFirstMover] = useState<any>(null);
 
+  const [waitRematchInvitation, setWaitRematchInvitation] = useState(false);
+
   //invite
   const {
     isInvitationVisible,
@@ -130,6 +132,7 @@ const Play = () => {
   const handleRematch = () => {
     showToastSuccess(`Rematch !`);
     setIsGameDoneModalVisible(false);
+    setWaitRematchInvitation(false);
   };
 
   const handleDeclineRematch = (decliner: UserProps | null) => {
@@ -140,6 +143,7 @@ const Play = () => {
     }
     setIsGameDoneModalVisible(false);
     setIsGameStarted(false);
+    setWaitRematchInvitation(false);
   };
 
   useEffect(() => {
@@ -267,6 +271,8 @@ const Play = () => {
           setIsGameDoneModalVisible(false);
         }}
         message={gameMessage}
+        waitRematchInvitation={waitRematchInvitation}
+        setWaitRematchInvitation={setWaitRematchInvitation}
       />
     </>
   );
