@@ -19,7 +19,6 @@ export function GameApi() {
     opponentId: string,
     params: any
   ) => {
-    console.log("called ");
     const query = new URLSearchParams(params).toString();
 
     const res = await axios.get(

@@ -86,9 +86,7 @@ const Board = (props: BoardProps) => {
   const insertGame = async (payload: any) => {
     try {
       await createGame(payload, token);
-    } catch (err: any) {
-      console.log("err ", err);
-    }
+    } catch (err: any) {}
   };
 
   useEffect(() => {

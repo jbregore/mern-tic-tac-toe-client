@@ -24,7 +24,6 @@ const Navbar = (props: NavbarProps) => {
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false);
 
   const handleLogout = async () => {
-    console.log("naclick");
     Cookies.remove("token");
     await signout(token);
     socket.emit("logout");

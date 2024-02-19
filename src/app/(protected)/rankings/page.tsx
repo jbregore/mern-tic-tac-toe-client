@@ -31,8 +31,6 @@ const Rankings = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
-  console.log("rankLists ", rankLists);
-
   return (
     <>
       <div className="max-w-screen-sm flex flex-wrap items-center justify-between md:mx-auto mx-4">

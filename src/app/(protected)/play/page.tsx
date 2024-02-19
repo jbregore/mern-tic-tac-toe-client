@@ -136,7 +136,6 @@ const Play = () => {
   };
 
   const handleDeclineRematch = (decliner: UserProps | null) => {
-    console.log("triggered ");
     if (decliner) {
       showToastError(
         `${decliner.first_name + " " + decliner.last_name} don't want a rematch`
