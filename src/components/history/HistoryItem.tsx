@@ -27,7 +27,9 @@ const HistoryItem = (props: HistoryItemProps) => {
               : ""
           }`}
         >
-          {result.toUpperCase()}
+          {result === "tied"
+            ? result.toUpperCase()
+            : `YOU ${result.toUpperCase()}`}
         </p>
       </div>
     </div>
