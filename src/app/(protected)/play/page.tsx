@@ -18,9 +18,11 @@ import useInvite from "@/hooks/useInvite";
 import useInvited from "@/hooks/useInvited";
 import useGame from "@/hooks/useGame";
 import GameDoneModal from "@/components/modals/GameDoneModal";
+import { useRouter } from "next/navigation";
 
 const Play = () => {
   const { user } = useUserStore();
+  const router = useRouter();
 
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [firstMover, setFirstMover] = useState<any>(null);
@@ -156,7 +158,7 @@ const Play = () => {
         setOnlineUsers(filteredUsers);
       });
     }
-  }, [user]);
+  }, [user, router]);
 
   useEffect(() => {
     socket.on("game:invitation", handleGameInvite);
