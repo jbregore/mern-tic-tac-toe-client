@@ -2,12 +2,12 @@ import React from "react";
 import { HistoryItemProps } from "./interfaces";
 
 const HistoryItem = (props: HistoryItemProps) => {
-  const { user, date, result } = props;
+  const { user, date, result, userInitials } = props;
   return (
     <div className="flex items-center mb-4">
       <div className="grow flex items-center space-x-2">
         <div className="w-10 h-10 rounded-full bg-slate-400 flex items-center justify-center font-bold">
-          KS
+          {userInitials}
         </div>
         <div>
           <p>{user}</p>

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { CookiesProvider } from "next-client-cookies/server";
 import ToastProvider from "@/components/toast/ToastProvider";
+import ReactQueryProvider from "@/components/react-query/ReactQueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,9 +24,11 @@ export default function RootLayout({
         className={`${inter.className} bg-slate-200`}
         suppressHydrationWarning
       >
-        <ToastProvider>
-          <CookiesProvider>{children}</CookiesProvider>
-        </ToastProvider>
+        <ReactQueryProvider>
+          <ToastProvider>
+            <CookiesProvider>{children}</CookiesProvider>
+          </ToastProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   );
