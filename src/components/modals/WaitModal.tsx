@@ -6,6 +6,7 @@ import { WaitModalProps } from "./interfaces";
 import Button from "../buttons/Button";
 import { socket } from "@/utils/socket";
 import { useUserStore } from "@/zustand/store";
+import { UserProps } from "@/zustand/interfaces";
 
 const WaitModal = (props: WaitModalProps) => {
   const { visible, onClose, invitedUser } = props;
@@ -14,6 +15,10 @@ const WaitModal = (props: WaitModalProps) => {
 
   const invitedUserFullName =
     invitedUser.first_name + " " + invitedUser.last_name;
+
+  const handleGameDecline = (declinerUser: UserProps) => {
+    setCounter(20);
+  };
 
   useEffect(() => {
     let timeoutId: any = null;
@@ -42,6 +47,15 @@ const WaitModal = (props: WaitModalProps) => {
       return () => clearInterval(intervalId);
     }
   }, [visible]);
+
+  useEffect(() => {
+    socket.on("game:decline", handleGameDecline);
+
+    return () => {
+      socket.off("game:decline", handleGameDecline);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Modal visible={visible}>

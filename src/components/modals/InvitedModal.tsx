@@ -64,6 +64,7 @@ const InvitedModal = (props: InvitedModalProps) => {
             <Button
               onClick={() => {
                 socket.emit("invite:decline", user, inviterUser.uuid);
+                setCounter(20);
                 onClose(false);
               }}
               title="Decline"
