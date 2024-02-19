@@ -136,6 +136,7 @@ const Play = () => {
   };
 
   const handleDeclineRematch = (decliner: UserProps | null) => {
+    console.log("triggered ");
     if (decliner) {
       showToastError(
         `${decliner.first_name + " " + decliner.last_name} don't want a rematch`
@@ -148,7 +149,6 @@ const Play = () => {
 
   useEffect(() => {
     if (user.uuid !== "") {
-      console.log("socketID ", socket.id);
       socket.emit("set-user", user);
       socket.on("get-users", (users) => {
         const filteredUsers = users.filter(
