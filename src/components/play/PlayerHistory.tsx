@@ -39,9 +39,6 @@ const PlayerHistory = (props: any) => {
   useEffect(() => {
     socket.on("gameplay:done", handleGameDone);
 
-    return () => {
-      socket.on("gameplay:done", handleGameDone);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

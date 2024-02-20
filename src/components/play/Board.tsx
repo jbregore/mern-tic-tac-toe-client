@@ -93,12 +93,6 @@ const Board = (props: BoardProps) => {
     socket.on("gameplay:updated", handleGameUpdated);
     socket.on("start:new_match", handleRematch);
     socket.on("cancel:new_match", handleDeclineRematch);
-
-    return () => {
-      socket.on("gameplay:updated", handleGameUpdated);
-      socket.on("start:new_match", handleRematch);
-      socket.on("cancel:new_match", handleDeclineRematch);
-    };
   }, []);
 
   useEffect(() => {

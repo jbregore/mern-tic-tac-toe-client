@@ -51,9 +51,6 @@ const WaitModal = (props: WaitModalProps) => {
   useEffect(() => {
     socket.on("game:decline", handleGameDecline);
 
-    return () => {
-      socket.off("game:decline", handleGameDecline);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

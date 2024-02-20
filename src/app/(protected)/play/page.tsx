@@ -161,6 +161,7 @@ const Play = () => {
   }, [user, router]);
 
   useEffect(() => {
+    console.log("trigerredddd");
     socket.on("game:invitation", handleGameInvite);
     socket.on("game:decline", handleGameDecline);
     socket.on("game:start", handleStartGame);
@@ -170,16 +171,6 @@ const Play = () => {
     socket.on("start:new_match", handleRematch);
     socket.on("cancel:new_match", handleDeclineRematch);
 
-    return () => {
-      socket.off("game:invitation", handleGameInvite);
-      socket.off("game:decline", handleGameDecline);
-      socket.on("game:start", handleStartGame);
-      socket.on("game:close", handleCancelInvite);
-      socket.on("gameplay:updated", handleGameUpdated);
-      socket.on("gameplay:done", handleGameDone);
-      socket.on("start:new_match", handleRematch);
-      socket.on("cancel:new_match", handleDeclineRematch);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
