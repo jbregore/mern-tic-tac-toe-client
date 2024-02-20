@@ -171,6 +171,17 @@ const Play = () => {
     socket.on("start:new_match", handleRematch);
     socket.on("cancel:new_match", handleDeclineRematch);
 
+    return () => {
+      socket.off("game:invitation", handleGameInvite);
+      socket.off("game:decline", handleGameDecline);
+      socket.off("game:start", handleStartGame);
+      socket.off("game:close", handleCancelInvite);
+      socket.off("gameplay:updated", handleGameUpdated);
+      socket.off("gameplay:done", handleGameDone);
+      socket.off("start:new_match", handleRematch);
+      socket.off("cancel:new_match", handleDeclineRematch);
+    };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
